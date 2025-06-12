@@ -1,6 +1,5 @@
 package com.hrod.service;
 
-import com.hrod.dto.ClientDTO;
 import com.hrod.dto.ProduitDTO;
 import com.hrod.model.Client;
 import com.hrod.model.Produit;
@@ -13,23 +12,30 @@ import java.util.List;
 @Service
 public class ProduitService {
 
-    private final ProduitRepository repository;
+    private final ProduitRepository produitRepository;
     private final ClientRepository clientRepository;
 
     public ProduitService(ProduitRepository repository, ClientRepository clientRepository) {
-        this.repository = repository;
+        this.produitRepository = repository;
         this.clientRepository = clientRepository;
     }
 
     public List<ProduitDTO> getAllProduits() {
-        return repository.findAll().stream()
+        return produitRepository.findAll().stream()
                 .map(this::toDTO)
                 .toList();
     }
 
+    public List<ProduitDTO> getProduitsByClientId(Long clientId) {
+        return produitRepository.findByClientId(clientId).stream()
+                .map(this::toDTO)
+                .toList();
+    }
+
+
     public ProduitDTO createProduit(ProduitDTO dto) {
         Produit produit = fromDTO(dto);
-        return toDTO(repository.save(produit));
+        return toDTO(produitRepository.save(produit));
     }
 
     // --- Mapping ---

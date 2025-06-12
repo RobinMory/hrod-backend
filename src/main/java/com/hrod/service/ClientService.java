@@ -13,29 +13,29 @@ import java.util.List;
 @Service
 public class ClientService {
 
-    private final ClientRepository repository;
+    private final ClientRepository clientRepository;
     private final ProduitRepository produitRepository;
 
     public ClientService(ClientRepository repository, ProduitRepository produitRepository) {
-        this.repository = repository;
+        this.clientRepository = repository;
         this.produitRepository = produitRepository;
     }
 
     public List<ClientDTO> getAllClients() {
-        return repository.findAll().stream()
+        return clientRepository.findAll().stream()
                 .map(this::toDTO)
                 .toList();
     }
 
     public ClientDTO getClientById(Long id) {
-        Client client = repository.findById(id)
+        Client client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
         return toDTO(client);
     }
 
     public ClientDTO createClient(ClientDTO dto) {
         Client client = fromDTO(dto);
-        return toDTO(repository.save(client));
+        return toDTO(clientRepository.save(client));
     }
 
     private ProduitDTO toProduitDTO(Produit produit) {
@@ -51,6 +51,7 @@ public class ClientService {
                 .toList();
         return new ClientDTO(client.getId(), client.getNom(), client.getEmail(), client.getTelephone(),produits);
     }
+
 
     private Client fromDTO(ClientDTO dto) {
         return new Client(dto.getId(), dto.getNom(), dto.getEmail(), dto.getTelephone(),null);

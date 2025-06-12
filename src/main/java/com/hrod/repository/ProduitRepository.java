@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
     List<Produit> findByClient(Client client);
-    // Tu peux ajouter des méthodes personnalisées ici plus tard
+    List<Produit> findByClientId(Long clientId);
 }

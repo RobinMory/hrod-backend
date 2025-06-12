@@ -6,23 +6,30 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/produits")
 public class ProduitController {
 
-    private final ProduitService service;
+    private final ProduitService produitService;
 
     public ProduitController(ProduitService service) {
-        this.service = service;
+        this.produitService = service;
     }
 
     @GetMapping
     public List<ProduitDTO> getProduits() {
-        return service.getAllProduits();
+        return produitService.getAllProduits();
     }
+
+    @GetMapping("/client/{clientId}")
+    public List<ProduitDTO> getProduitsByClient(@PathVariable Long clientId) {
+        return produitService.getProduitsByClientId(clientId);
+    }
+
 
     @PostMapping
     public ProduitDTO addProduit(@RequestBody ProduitDTO produit) {
-        return service.createProduit(produit);
+        return produitService.createProduit(produit);
     }
 }
